@@ -1,0 +1,7 @@
+bind $my_menu A_0001 compose-message
+bind $my_menu A_0002 delete-alias
+bind $my_menu A_0003 tag-pattern
+bind $my_menu A_0004 undelete-alias
+bind $my_menu A_0005 untag-pattern
+
+# vim: ft=neomuttrc

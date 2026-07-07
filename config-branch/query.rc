@@ -1,0 +1,8 @@
+bind $my_menu M_0001 compose-message
+bind $my_menu M_0002 create-alias
+bind $my_menu M_0003 query
+bind $my_menu M_0004 query-append
+bind $my_menu M_0005 tag-pattern
+bind $my_menu M_0006 untag-pattern
+
+# vim: ft=neomuttrc
