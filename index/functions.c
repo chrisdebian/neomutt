@@ -146,7 +146,7 @@ static const struct MenuFuncOp OpIndex[] = { /* map: index */
   { "list-subscribe",                OP_LIST_SUBSCRIBE },
   { "list-unsubscribe",              OP_LIST_UNSUBSCRIBE },
   { "mail",                          OP_MAIL },
-  { "mail-key",                      OP_MAIL_KEY },
+  { "mail-key",                      OP_SEND_PGP_KEY },
   { "mailbox-list",                  OP_MAILBOX_LIST },
   { "mark-message",                  OP_MARK_MSG },
   { "modify-labels",                 OP_MAIN_MODIFY_TAGS },
@@ -257,7 +257,6 @@ static const struct MenuOpSeq IndexDefaultBindings[] = { /* map: index */
   { OP_LIST_REPLY,                         "L" },
   { OP_MAIL,                               "m" },
   { OP_MAILBOX_LIST,                       "." },
-  { OP_MAIL_KEY,                           "\033k" },          // <Alt-k>
   { OP_MAIN_BREAK_THREAD,                  "#" },
   { OP_MAIN_CHANGE_FOLDER,                 "c" },
   { OP_MAIN_CHANGE_FOLDER_READONLY,        "\033c" },          // <Alt-c>
@@ -298,6 +297,7 @@ static const struct MenuOpSeq IndexDefaultBindings[] = { /* map: index */
   { OP_SELECT_PREVIOUS_SUBTREE,            "\033p" },          // <Alt-p>
   { OP_SELECT_PREVIOUS_TREE,               "\020" },           // <Ctrl-P>
   { OP_SELECT_TREE_PARENT_ENTRY,           "P" },
+  { OP_SEND_PGP_KEY,                       "\033k" },          // <Alt-k>
   { OP_SORT,                               "o" },
   { OP_SORT_REVERSE,                       "O" },
   { OP_TOGGLE_ALL_TREES,                   "\033V" },          // <Alt-V>
@@ -3939,7 +3939,6 @@ static const struct IndexFunction IndexFunctions[] = {
   { OP_LIST_UNSUBSCRIBE,                 op_list_unsubscribe,         CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_MAIL,                             op_mail,                     CHECK_ATTACH },
   { OP_MAILBOX_LIST,                     op_mailbox_list,             CHECK_NONE },
-  { OP_MAIL_KEY,                         op_mail_key,                 CHECK_ATTACH },
   { OP_MAIN_BREAK_THREAD,                op_main_break_thread,        CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
   { OP_MAIN_CHANGE_FOLDER,               op_main_change_folder,       CHECK_NONE },
   { OP_MAIN_CHANGE_FOLDER_READONLY,      op_main_change_folder,       CHECK_NONE },
@@ -3999,6 +3998,7 @@ static const struct IndexFunction IndexFunctions[] = {
   { OP_SELECT_PREVIOUS_TREE,             op_select_next_subtree,      CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_SELECT_TREE_PARENT_ENTRY,         op_select_tree_parent_entry, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_SELECT_TREE_ROOT_ENTRY,           op_select_tree_parent_entry, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
+  { OP_SEND_PGP_KEY,                     op_mail_key,                 CHECK_ATTACH },
   { OP_SORT,                             op_sort,                     CHECK_NONE },
   { OP_SORT_REVERSE,                     op_sort,                     CHECK_NONE },
   { OP_TOGGLE_ALL_TREES,                 op_toggle_all_trees,         CHECK_IN_MAILBOX },
