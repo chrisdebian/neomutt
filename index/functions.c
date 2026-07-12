@@ -306,7 +306,7 @@ static const struct MenuOpSeq IndexDefaultBindings[] = { /* map: index */
   { OP_EXTRACT_KEYS,                        "\013" },           // <Ctrl-K>
   { OP_FORGET_PASSPHRASE,                   "\006" },           // <Ctrl-F>
   { OP_FORWARD_MESSAGE,                     "f" },
-  { OP_LIMIT_MESSAGES,                      "l" },
+  { OP_LIMIT_ENTRIES,                       "l" },
   { OP_LIST_REPLY,                          "L" },
   { OP_MAIN_BREAK_THREAD,                   "#" },
   { OP_MAIN_CHANGE_FOLDER,                  "c" },
@@ -316,7 +316,7 @@ static const struct MenuOpSeq IndexDefaultBindings[] = { /* map: index */
   { OP_MAIN_DELETE_PATTERN,                 "D" },
   { OP_MAIN_LINK_THREADS,                   "&" },
   { OP_MAIN_SET_FLAG,                       "w" },
-  { OP_MAIN_SHOW_LIMIT,                     "\033l" },          // <Alt-l>
+  { OP_SHOW_LIMIT,                          "\033l" },          // <Alt-l>
   { OP_MAIN_SYNC_FOLDER,                    "$" },
   { OP_MAIN_TAG_PATTERN,                    "T" },
   { OP_MAIN_UNDELETE_PATTERN,               "U" },
@@ -325,9 +325,9 @@ static const struct MenuOpSeq IndexDefaultBindings[] = { /* map: index */
   { OP_MARK_THREAD_READ,                    "\022" },           // <Ctrl-R>
   { OP_MOVE_MESSAGE,                        "s" },
   { OP_MOVE_MESSAGE_DECODED,                "\033s" },          // <Alt-s>
-  { OP_PIPE,                                "|" },
+  { OP_PIPE_ENTRY,                          "|" },
   { OP_POP_FETCH_MAIL,                      "G" },
-  { OP_PRINT,                               "p" },
+  { OP_PRINT_ENTRY,                         "p" },
   { OP_QUIT,                                "q" },
   { OP_RECALL_DRAFT_MESSAGE,                "R" },
   { OP_REPLY_ALL,                           "g" },
@@ -1731,7 +1731,7 @@ static int op_main_delete_pattern(struct IndexFunctionData *fdata, const struct 
  * op_main_limit - Limit view to a pattern/thread - Implements ::index_function_t - @ingroup index_function_api
  *
  * This function handles:
- * - OP_LIMIT_MESSAGES
+ * - OP_LIMIT_ENTRIES
  * - OP_LIMIT_THREAD
  * - OP_TOGGLE_READ_MESSAGES
  */
@@ -1766,7 +1766,7 @@ static int op_main_limit(struct IndexFunctionData *fdata, const struct KeyEvent 
   if (((op == OP_LIMIT_THREAD) &&
        mutt_limit_current_thread(shared->mailbox_view, shared->email)) ||
       (op == OP_TOGGLE_READ_MESSAGES) ||
-      ((op == OP_LIMIT_MESSAGES) && (mutt_pattern_func(shared->mailbox_view, MUTT_LIMIT,
+      ((op == OP_LIMIT_ENTRIES) && (mutt_pattern_func(shared->mailbox_view, MUTT_LIMIT,
                                                    _("Limit to messages matching: ")) == 0)))
   {
     priv->menu->max = shared->mailbox->vcount;
@@ -3973,7 +3973,7 @@ static const struct IndexFunction IndexFunctions[] = {
   { OP_FOLD_ALL_TREES,                       op_fold_all_trees,           CHECK_IN_MAILBOX },
   { OP_FOLD_TREE,                            op_fold_tree,                CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_FORWARD_MESSAGE,                      op_forward_message,          CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
-  { OP_LIMIT_MESSAGES,                       op_main_limit,               CHECK_IN_MAILBOX },
+  { OP_LIMIT_ENTRIES,                        op_main_limit,               CHECK_IN_MAILBOX },
   { OP_LIMIT_THREAD,                         op_main_limit,               CHECK_IN_MAILBOX },
   { OP_LIST_REPLY,                           op_list_reply,               CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_LIST_SUBSCRIBE,                       op_list_subscribe,           CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
@@ -3988,7 +3988,7 @@ static const struct IndexFunction IndexFunctions[] = {
   { OP_MAIN_IMAP_LOGOUT_ALL,                 op_main_imap_logout_all,     CHECK_NONE },
   { OP_MAIN_LINK_THREADS,                    op_main_link_threads,        CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
   { OP_MAIN_SET_FLAG,                        op_main_set_flag,            CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
-  { OP_MAIN_SHOW_LIMIT,                      op_main_show_limit,          CHECK_IN_MAILBOX },
+  { OP_SHOW_LIMIT,                           op_main_show_limit,          CHECK_IN_MAILBOX },
   { OP_MAIN_SYNC_FOLDER,                     op_main_sync_folder,         CHECK_NONE },
   { OP_MAIN_TAG_PATTERN,                     op_main_tag_pattern,         CHECK_IN_MAILBOX },
   { OP_MAIN_UNDELETE_PATTERN,                op_main_undelete_pattern,    CHECK_IN_MAILBOX | CHECK_READONLY },
@@ -4006,9 +4006,9 @@ static const struct IndexFunction IndexFunctions[] = {
   { OP_NNTP_MARK_NEWSGROUP_READ,             op_catchup,                  CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY },
   { OP_NNTP_POST_MESSAGE,                    op_post,                     CHECK_ATTACH | CHECK_IN_MAILBOX },
   { OP_NNTP_RECONSTRUCT_THREAD,              op_get_children,             CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
-  { OP_PIPE,                                 op_pipe,                     CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
+  { OP_PIPE_ENTRY,                           op_pipe,                     CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_POP_FETCH_MAIL,                       op_main_fetch_mail,          CHECK_ATTACH },
-  { OP_PRINT,                                op_print,                    CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
+  { OP_PRINT_ENTRY,                          op_print,                    CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_PURGE_MESSAGE,                        op_delete,                   CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
   { OP_PURGE_THREAD,                         op_delete_thread,            CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
   { OP_QUASI_DELETE_MESSAGE,                 op_main_quasi_delete,        CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
