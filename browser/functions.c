@@ -91,8 +91,10 @@ static const struct MenuFuncOp OpBrowser[] = { /* map: browser */
   { "view-file",                     OP_BROWSER_VIEW_FILE },
 
   // Deprecated
-  { "enter-mask",                    OP_BROWSER_LIMIT,  MFF_DEPRECATED },
-  { "buffy-list",                    OP_SHOW_MAILBOXES, MFF_DEPRECATED },
+  { "buffy-list",                    OP_SHOW_MAILBOXES,       MFF_DEPRECATED },
+  { "enter-mask",                    OP_BROWSER_LIMIT,        MFF_DEPRECATED },
+  { "sort",                          OP_SORT_ENTRIES,         MFF_DEPRECATED },
+  { "sort-reverse",                  OP_SORT_ENTRIES_REVERSE, MFF_DEPRECATED },
   { NULL, 0 },
 };
 
@@ -305,7 +307,8 @@ static int op_browser_subscribe(struct BrowserPrivateData *priv, const struct Ke
 
   if (ARRAY_EMPTY(&priv->state.entry))
   {
-    mutt_error(OptNews ? _("No newsgroups match the browser limit") : _("There are no mailboxes"));
+    mutt_error(OptNews ? _("No newsgroups match the browser limit") :
+                         _("There are no mailboxes"));
     return FR_ERROR;
   }
 
