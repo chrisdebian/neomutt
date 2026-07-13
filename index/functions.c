@@ -101,7 +101,7 @@ static const struct MenuFuncOp OpIndex[] = { /* map: index */
   { "copy-message-decrypted",                OP_COPY_MESSAGE_DECRYPTED },
   { "create-alias",                          OP_CREATE_ALIAS },
   { "create-message-hotkey",                 OP_CREATE_MESSAGE_HOTKEY },
-  { "delete-message",                        OP_DELETE },
+  { "delete-message",                        OP_DELETE_MESSAGE },
   { "delete-pattern",                        OP_MAIN_DELETE_PATTERN },
   { "delete-subthread",                      OP_DELETE_SUBTHREAD },
   { "delete-thread",                         OP_DELETE_THREAD },
@@ -167,7 +167,7 @@ static const struct MenuFuncOp OpIndex[] = { /* map: index */
   { "toggle-mailbox-readonly",               OP_TOGGLE_MAILBOX_READONLY },
   { "toggle-new-flag",                       OP_TOGGLE_NEW_FLAG },
   { "toggle-read-messages",                  OP_TOGGLE_READ_MESSAGES },
-  { "undelete-message",                      OP_UNDELETE },
+  { "undelete-message",                      OP_UNDELETE_MESSAGE },
   { "undelete-pattern",                      OP_MAIN_UNDELETE_PATTERN },
   { "undelete-subthread",                    OP_UNDELETE_SUBTHREAD },
   { "undelete-thread",                       OP_UNDELETE_THREAD },
@@ -196,7 +196,7 @@ static const struct MenuFuncOp OpIndex[] = { /* map: index */
   { "buffy-list",                            OP_SHOW_MAILBOXES,                      MFF_DEPRECATED },
   { "catchup",                               OP_NNTP_MARK_NEWSGROUP_READ,            MFF_DEPRECATED },
 #ifdef USE_NOTMUCH
-  { "change-vfolder",                        OP_MAIN_CHANGE_VFOLDER,                 MFF_DEPRECATED },
+  { "change-vfolder",                        OP_MAIN_CHANGE_FOLDER,                  MFF_DEPRECATED },
 #endif
   { "clear-flag",                            OP_UNSET_FLAG,                          MFF_DEPRECATED },
   { "close-all-threads",                     OP_FOLD_ALL_TREES,                      MFF_DEPRECATED },
@@ -291,7 +291,7 @@ static const struct MenuOpSeq IndexDefaultBindings[] = { /* map: index */
   { OP_COPY_MESSAGE_DECODED,                "\033C" },          // <Alt-C>
   { OP_CREATE_ALIAS,                        "a" },
   { OP_CREATE_MESSAGE_HOTKEY,               "~" },
-  { OP_DELETE,                              "d" },
+  { OP_DELETE_MESSAGE,                      "d" },
   { OP_DELETE_SUBTHREAD,                    "\033d" },          // <Alt-d>
   { OP_DELETE_THREAD,                       "\004" },           // <Ctrl-D>
   { OP_DISPLAY_LOG,                         "M" },
@@ -357,7 +357,7 @@ static const struct MenuOpSeq IndexDefaultBindings[] = { /* map: index */
   { OP_TOGGLE_NEW_FLAG,                     "N" },
   { OP_TOGGLE_TAG_TREE,                     "\033t" },          // <Alt-t>
   { OP_TOGGLE_TREE,                         "\033v" },          // <Alt-v>
-  { OP_UNDELETE,                            "u" },
+  { OP_UNDELETE_MESSAGE,                    "u" },
   { OP_UNDELETE_SUBTHREAD,                  "\033u" },          // <Alt-u>
   { OP_UNDELETE_THREAD,                     "\025" },           // <Ctrl-U>
   { OP_UNSET_FLAG,                          "W" },
@@ -770,7 +770,7 @@ static int op_create_alias(struct IndexFunctionData *fdata, const struct KeyEven
  * op_delete - Delete the current entry - Implements ::index_function_t - @ingroup index_function_api
  *
  * This function handles:
- * - OP_DELETE
+ * - OP_DELETE_MESSAGE
  * - OP_PURGE_MESSAGE
  */
 static int op_delete(struct IndexFunctionData *fdata, const struct KeyEvent *event)
@@ -1533,7 +1533,6 @@ static int op_main_break_thread(struct IndexFunctionData *fdata, const struct Ke
  * This function handles:
  * - OP_MAIN_CHANGE_FOLDER
  * - OP_MAIN_CHANGE_FOLDER_READONLY
- * - OP_MAIN_CHANGE_VFOLDER
  */
 static int op_main_change_folder(struct IndexFunctionData *fdata, const struct KeyEvent *event)
 {
@@ -3958,7 +3957,7 @@ static const struct IndexFunction IndexFunctions[] = {
   { OP_COPY_MESSAGE_DECRYPTED,               op_save,                     CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_CREATE_ALIAS,                         op_create_alias,             CHECK_NONE },
   { OP_CREATE_MESSAGE_HOTKEY,                op_mark_msg,                 CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
-  { OP_DELETE,                               op_delete,                   CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
+  { OP_DELETE_MESSAGE,                       op_delete,                   CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
   { OP_DELETE_SUBTHREAD,                     op_delete_thread,            CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
   { OP_DELETE_THREAD,                        op_delete_thread,            CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
   { OP_DISPLAY_MESSAGE,                      op_display_message,          CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
@@ -4055,7 +4054,7 @@ static const struct IndexFunction IndexFunctions[] = {
   { OP_TOGGLE_TAG_SUBTREE,                   op_toggle_tag_subtree,       CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_TOGGLE_TAG_TREE,                      op_toggle_tag_subtree,       CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_TOGGLE_TREE,                          op_toggle_tree,              CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
-  { OP_UNDELETE,                             op_undelete,                 CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
+  { OP_UNDELETE_MESSAGE,                     op_undelete,                 CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
   { OP_UNDELETE_SUBTHREAD,                   op_undelete_thread,          CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
   { OP_UNDELETE_THREAD,                      op_undelete_thread,          CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
   { OP_UNFOLD_ALL_TREES,                     op_unfold_all_trees,         CHECK_IN_MAILBOX },
@@ -4070,7 +4069,6 @@ static const struct IndexFunction IndexFunctions[] = {
 #endif
 #ifdef USE_NOTMUCH
   { OP_FETCH_ENTIRE_THREAD,                  op_main_entire_thread,       CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
-  { OP_MAIN_CHANGE_VFOLDER,                  op_main_change_folder,       CHECK_NONE },
   { OP_VFOLDER_CREATE_FROM_QUERY,            op_main_vfolder_from_query,  CHECK_NONE },
   { OP_VFOLDER_CREATE_FROM_QUERY_READONLY,   op_main_vfolder_from_query,  CHECK_NONE },
   { OP_VFOLDER_RESET_WINDOW,                 op_main_windowed_vfolder,    CHECK_IN_MAILBOX },
